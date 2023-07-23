@@ -25,6 +25,5 @@ class PivotModel {
   factory PivotModel.fromJson(Map<String, dynamic> json) =>
       _$PivotModelFromJson(json);
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$PivotModelToJson(this);
 }

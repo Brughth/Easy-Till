@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import '../../application_screen.dart';
 import '../../auth/presentation/Register_screen.dart';
 import '../../auth/presentation/login_screen.dart';
+import '../../product/presentation/pages/product_screen.dart';
 
 part 'router.gr.dart';
 
@@ -19,6 +20,9 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: ApplicationRoute.page,
+        ),
+        AutoRoute(
+          page: ProductRoute.page,
         ),
       ];
 }

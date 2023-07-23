@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_till/auth/data/models/user_model.dart';
 import 'package:easy_till/auth/data/repositories/auth_repositiry.dart';
+import 'package:easy_till/shared/utils/utils.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_state.dart';
@@ -37,14 +38,15 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } catch (e) {
+      print(e);
       emit(
         state.copyWith(
-            isLonginging: false,
-            successLonginging: false,
-            errorLoginging: true,
-            message: e.toString()),
+          isLonginging: false,
+          successLonginging: false,
+          errorLoginging: true,
+          message: Utils.extracMessage(e),
+        ),
       );
-      print(e);
     }
   }
 }

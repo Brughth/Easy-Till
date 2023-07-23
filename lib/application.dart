@@ -1,5 +1,7 @@
+import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
 import 'package:easy_till/shared/routes/router.dart';
+import 'package:easy_till/shared/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,14 +18,33 @@ class Application extends StatelessWidget {
         BlocProvider<AuthCubit>(
           create: (context) => getIt.get<AuthCubit>(),
         ),
+        BlocProvider<ProductCubit>(
+          create: (context) => getIt.get<ProductCubit>(),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: _appRouter.config(),
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        title: 'Easy Till',
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.primaryColor,
+            brightness: Brightness.dark,
+          ),
           useMaterial3: true,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: AppColors.bgColor,
+          textTheme: const TextTheme(),
+        ),
+        themeMode: ThemeMode.dark,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: AppColors.bgColor,
         ),
       ),
     );

@@ -155,6 +155,9 @@ class _AppInputState extends State<AppInput> {
           controller: widget.controller,
           autofillHints: widget.autofillHints,
           onTap: widget.onTap,
+          style: const TextStyle(
+            color: AppColors.whiteGrey,
+          ),
           initialValue: widget.initialValue,
           enabled: widget.enable,
           validator: FormBuilderValidators.compose(widget.validators),
@@ -172,6 +175,7 @@ class _AppInputState extends State<AppInput> {
           decoration: InputDecoration(
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+
             hintText: widget.hint,
             hintStyle: const TextStyle(
               color: AppColors.primaryText,
