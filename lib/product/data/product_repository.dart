@@ -6,14 +6,10 @@ class ProductRepository {
   ProductRepository({
     required this.dio,
   });
-  var startTime = DateTime.now();
   Future<List<ProductModel>> getProducts({required int shopId}) async {
     Response response = await dio.get(
       '/api/shops/$shopId/products',
     );
-    var endTime = DateTime.now();
-
-    print("start: $startTime => end: $endTime");
 
     var data = response.data;
 

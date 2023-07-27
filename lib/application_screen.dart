@@ -1,11 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_till/auth/logic/cubit/auth_cubit.dart';
+import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
 import 'package:easy_till/shared/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:badges/badges.dart' as badges;
 
 @RoutePage()
 class ApplicationScreen extends StatelessWidget {
@@ -19,6 +21,22 @@ class ApplicationScreen extends StatelessWidget {
         backgroundColor: AppColors.bgColor,
         title: const Text("Easy Till"),
         centerTitle: true,
+        actions: [
+          BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              return badges.Badge(
+                badgeContent: Text(state.productsInCart.length.toString()),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.shopping_cart,
+                  ),
+                ),
+              );
+            },
+          ),
+          const SizedBox(width: 20),
+        ],
       ),
       body: BlocBuilder<ProductCubit, ProductState>(
         bloc: getIt.get<ProductCubit>(),
@@ -63,38 +81,45 @@ class ApplicationScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: 8,
             ),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: 2.8,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                crossAxisCount: 3,
-              ),
-              itemBuilder: (context, index) {
-                var product = products[index];
-                return InkWell(
-                  onTap: () {
-                    //cardProductProvider.addToCart(product);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: Colors.white54,
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        children: [
-                          Text(product.name),
-                          Text(product.unitPrice.toString()),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+            child: RefreshIndicator(
+              onRefresh: () async {
+                getIt.get<ProductCubit>().getProducts();
               },
-              itemCount: products.length,
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 2.8,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  crossAxisCount: 3,
+                ),
+                itemBuilder: (context, index) {
+                  var product = products[index];
+                  return InkWell(
+                    onTap: () {
+                      context.read<CartCubit>().addToCart(product);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          color: Colors.white54,
+                        ),
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(product.name),
+                            Text(
+                              product.unitPrice.toString(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                itemCount: products.length,
+              ),
             ),
           );
         },

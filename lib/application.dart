@@ -1,3 +1,4 @@
+import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
 import 'package:easy_till/shared/routes/router.dart';
@@ -16,10 +17,13 @@ class Application extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (context) => getIt.get<AuthCubit>(),
+          create: (context) => getIt.get<AuthCubit>()..checkAuthState(),
         ),
         BlocProvider<ProductCubit>(
           create: (context) => getIt.get<ProductCubit>(),
+        ),
+        BlocProvider<CartCubit>(
+          create: (context) => getIt.get<CartCubit>(),
         ),
       ],
       child: MaterialApp.router(

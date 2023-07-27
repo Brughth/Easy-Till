@@ -49,4 +49,35 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
+
+  checkAuthState() async {
+    try {
+      emit(
+        state.copyWith(
+          isCheckingAuthState: true,
+          errorCheckingAuthState: false,
+          successCheckingAuthState: false,
+        ),
+      );
+      var user = await authRepository.getUser();
+      emit(
+        state.copyWith(
+          user: user,
+          isCheckingAuthState: false,
+          errorCheckingAuthState: false,
+          successCheckingAuthState: true,
+        ),
+      );
+    } catch (e) {
+      print(e);
+      emit(
+        state.copyWith(
+          message: Utils.extracMessage(e),
+          isCheckingAuthState: false,
+          errorCheckingAuthState: true,
+          successCheckingAuthState: false,
+        ),
+      );
+    }
+  }
 }

@@ -31,4 +31,9 @@ class AuthRepository {
 
     return UserModel.fromJson(data['user']);
   }
+
+  Future<UserModel> getUser() async {
+    Response response = await dio.get('/api/auth/me');
+    return UserModel.fromJson(response.data);
+  }
 }

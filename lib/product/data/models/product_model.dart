@@ -74,6 +74,46 @@ class ProductModel {
   //     _$ProductModelFromJson(json);
 
   // Map<String, dynamic> toJson() => _$ProductModelToJson(this);
+
+  ProductModel copyWith({
+    int? id,
+    String? name,
+    String? reference,
+    String? description,
+    int? unitPrice,
+    int? stockLimit,
+    int? shopId,
+    int? stockManagment,
+    int? quantity,
+    String? image,
+    int? categoryId,
+    String? createdAt,
+    String? updatedAt,
+    int? isPublic,
+    int? isFeatured,
+    int? publicPrice,
+    String? deletedAt,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      reference: reference ?? this.reference,
+      description: description ?? this.description,
+      unitPrice: unitPrice ?? this.unitPrice,
+      stockLimit: stockLimit ?? this.stockLimit,
+      shopId: shopId ?? this.shopId,
+      stockManagment: stockManagment ?? this.stockManagment,
+      quantity: quantity ?? this.quantity,
+      image: image ?? this.image,
+      categoryId: categoryId ?? this.categoryId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isPublic: isPublic ?? this.isPublic,
+      isFeatured: isFeatured ?? this.isFeatured,
+      publicPrice: publicPrice ?? this.publicPrice,
+      deletedAt: deletedAt ?? this.deletedAt,
+    );
+  }
 }
 
 

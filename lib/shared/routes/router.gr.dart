@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ProductScreen(),
       );
     },
+    AppInitRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AppInitScreen(),
+      );
+    },
   };
 }
 
@@ -94,6 +100,20 @@ class ProductRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ProductRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AppInitScreen]
+class AppInitRoute extends PageRouteInfo<void> {
+  const AppInitRoute({List<PageRouteInfo>? children})
+      : super(
+          AppInitRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AppInitRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
