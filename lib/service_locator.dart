@@ -24,9 +24,9 @@ void setupLocator() {
           'Accept': 'application/json',
         },
       ),
-    )..interceptors.add(
+    )..interceptors.addAll([
         TokenInterceptor(),
-      ),
+      ]),
   );
   getIt.registerSingleton<AuthRepository>(
     AuthRepository(dio: getIt.get<Dio>()),

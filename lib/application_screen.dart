@@ -3,6 +3,7 @@ import 'package:easy_till/auth/logic/cubit/auth_cubit.dart';
 import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
+import 'package:easy_till/shared/routes/router.dart';
 import 'package:easy_till/shared/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,9 @@ class ApplicationScreen extends StatelessWidget {
               return badges.Badge(
                 badgeContent: Text(state.productsInCart.length.toString()),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(const CartRoute());
+                  },
                   icon: const Icon(
                     Icons.shopping_cart,
                   ),

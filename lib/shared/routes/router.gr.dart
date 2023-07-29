@@ -15,6 +15,18 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ApplicationRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ApplicationScreen(),
+      );
+    },
+    AppInitRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AppInitScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -27,10 +39,10 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RegisterScreen(),
       );
     },
-    ApplicationRoute.name: (routeData) {
+    CartRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ApplicationScreen(),
+        child: const CartScreen(),
       );
     },
     ProductRoute.name: (routeData) {
@@ -39,13 +51,35 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ProductScreen(),
       );
     },
-    AppInitRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const AppInitScreen(),
-      );
-    },
   };
+}
+
+/// generated route for
+/// [ApplicationScreen]
+class ApplicationRoute extends PageRouteInfo<void> {
+  const ApplicationRoute({List<PageRouteInfo>? children})
+      : super(
+          ApplicationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ApplicationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AppInitScreen]
+class AppInitRoute extends PageRouteInfo<void> {
+  const AppInitRoute({List<PageRouteInfo>? children})
+      : super(
+          AppInitRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AppInitRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -77,15 +111,15 @@ class RegisterRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [ApplicationScreen]
-class ApplicationRoute extends PageRouteInfo<void> {
-  const ApplicationRoute({List<PageRouteInfo>? children})
+/// [CartScreen]
+class CartRoute extends PageRouteInfo<void> {
+  const CartRoute({List<PageRouteInfo>? children})
       : super(
-          ApplicationRoute.name,
+          CartRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'ApplicationRoute';
+  static const String name = 'CartRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -100,20 +134,6 @@ class ProductRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ProductRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [AppInitScreen]
-class AppInitRoute extends PageRouteInfo<void> {
-  const AppInitRoute({List<PageRouteInfo>? children})
-      : super(
-          AppInitRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'AppInitRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

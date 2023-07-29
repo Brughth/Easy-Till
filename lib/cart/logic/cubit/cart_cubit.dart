@@ -9,8 +9,22 @@ class CartCubit extends Cubit<CartState> {
       : super(
           CartState(
             productsInCart: [],
+            total: 0.0,
           ),
         );
+
+  updateTotal() {
+    double total = 0;
+    for (var p in state.productsInCart) {
+      total = total + (p.unitPrice * (p.quantity ?? 1));
+    }
+
+    emit(
+      state.copyWith(
+        total: total,
+      ),
+    );
+  }
 
   getIndex(ProductModel product) {
     return state.productsInCart.indexWhere((item) => item.id == product.id);
@@ -20,16 +34,37 @@ class CartCubit extends Cubit<CartState> {
     return getIndex(product) >= 0;
   }
 
+  incrementQuantity(ProductModel product) {
+    var index = getIndex(product);
+    List<ProductModel> products = [...state.productsInCart];
+    products[index].quantity = products[index].quantity! + 1;
+    emit(
+      state.copyWith(
+        productsInCart: products,
+      ),
+    );
+    updateTotal();
+  }
+
+  decrementQuantity(ProductModel product) {
+    List<ProductModel> products = [...state.productsInCart];
+    var index = getIndex(product);
+    if (product.quantity == 1) {
+      products.removeAt(index);
+    } else {
+      products[index].quantity = products[index].quantity! - 1;
+    }
+    emit(
+      state.copyWith(
+        productsInCart: products,
+      ),
+    );
+    updateTotal();
+  }
+
   addToCart(ProductModel product) {
     if (isInCart(product)) {
-      var index = getIndex(product);
-      List<ProductModel> products = [...state.productsInCart];
-      products[index].quantity = products[index].quantity! + 1;
-      emit(
-        state.copyWith(
-          productsInCart: products,
-        ),
-      );
+      incrementQuantity(product);
     } else {
       List<ProductModel> products = [...state.productsInCart];
       products.add(
@@ -43,5 +78,6 @@ class CartCubit extends Cubit<CartState> {
         ),
       );
     }
+    updateTotal();
   }
 }

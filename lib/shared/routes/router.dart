@@ -4,6 +4,7 @@ import 'package:easy_till/app_init_screen.dart';
 import '../../application_screen.dart';
 import '../../auth/presentation/Register_screen.dart';
 import '../../auth/presentation/login_screen.dart';
+import '../../cart/presentation/pages/cart_screen.dart';
 import '../../product/presentation/pages/product_screen.dart';
 
 part 'router.gr.dart';
@@ -27,6 +28,9 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: ProductRoute.page,
+        ),
+        AutoRoute(
+          page: CartRoute.page,
         ),
       ];
 }
