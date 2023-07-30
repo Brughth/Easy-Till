@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cart/logic/cubit/cart_cubit.dart';
+
 @RoutePage()
 class AppInitScreen extends StatelessWidget {
   const AppInitScreen({super.key});
@@ -25,7 +27,9 @@ class AppInitScreen extends StatelessWidget {
 
           if (state.successCheckingAuthState) {
             getIt.get<ProductCubit>().getProducts();
-
+            getIt
+                .get<CartCubit>()
+                .getPaymentMethods(shopId: state.user!.shopId);
             context.router.pushAndPopUntil(
               const ApplicationRoute(),
               predicate: (_) => false,

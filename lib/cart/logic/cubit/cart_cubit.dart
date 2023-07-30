@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_till/cart/data/models/payment_method_model.dart';
+import 'package:easy_till/cart/data/repositories/cart_repository.dart';
 import 'package:easy_till/product/data/models/product_model.dart';
-import 'package:meta/meta.dart';
 
 part 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  CartCubit()
-      : super(
+  final CartRepository cartRepository;
+  CartCubit({
+    required this.cartRepository,
+  }) : super(
           CartState(
             productsInCart: [],
             total: 0.0,
@@ -79,5 +82,53 @@ class CartCubit extends Cubit<CartState> {
       );
     }
     updateTotal();
+  }
+
+  clearCart() {
+    emit(
+      state.copyWith(
+        productsInCart: [],
+        total: 0.0,
+      ),
+    );
+  }
+
+  setSelectedPaymentMethod(PaymentMethodModel pm) {
+    emit(
+      state.copyWith(
+        selectedPaymentMothod: pm,
+      ),
+    );
+  }
+
+  getPaymentMethods({required int shopId}) async {
+    try {
+      emit(
+        state.copyWith(
+          isLoadingPm: true,
+          errorLoadingPm: false,
+          successLoadingPm: false,
+        ),
+      );
+
+      var shopPms = await cartRepository.getPaymentMethods(shopId: shopId);
+      emit(
+        state.copyWith(
+          shopPaymentMethods: shopPms,
+          isLoadingPm: false,
+          errorLoadingPm: false,
+          successLoadingPm: true,
+        ),
+      );
+    } catch (e) {
+      print(e);
+      emit(
+        state.copyWith(
+          isLoadingPm: false,
+          errorLoadingPm: true,
+          successLoadingPm: false,
+        ),
+      );
+    }
   }
 }

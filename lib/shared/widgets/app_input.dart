@@ -32,6 +32,7 @@ class AppInput extends StatefulWidget {
   final VoidCallback? onTap;
   final bool required;
   final List<String>? autofillHints;
+  final TextStyle labelStyle;
 
   const AppInput({
     super.key,
@@ -64,6 +65,11 @@ class AppInput extends StatefulWidget {
     this.required = false,
     this.nextNode,
     this.autofillHints,
+    this.labelStyle = const TextStyle(
+      color: AppColors.primaryText,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    ),
   });
 
   @override
@@ -132,11 +138,7 @@ class _AppInputState extends State<AppInput> {
                 Flexible(
                   child: Text(
                     "${widget.label}",
-                    style: const TextStyle(
-                      color: AppColors.primaryText,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    style: widget.labelStyle,
                   ),
                 ),
                 if (widget.required)

@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/data/models/product_model.dart';
+import 'package:easy_till/shared/routes/router.dart';
+import 'package:easy_till/shared/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +16,8 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mon panier"),
+        backgroundColor: AppColors.bgColor,
+        title: const Text("Cart"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -131,22 +134,63 @@ class CartScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    Text(
-                      "Total",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Total",
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "${state.total.ceil()}",
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
                     ),
-                    Text(
-                      "${state.total.ceil()}",
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppButton(
+                            borderColor: AppColors.grayScale,
+                            onPressed: () {
+                              context.read<CartCubit>().clearCart();
+                            },
+                            child: const Text(
+                              'Clear Cart',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 30),
+                        Expanded(
+                          child: AppButton(
+                            bgColor: AppColors.primaryColor,
+                            onPressed: () {
+                              context.router.push(const OrderRoute());
+                            },
+                            child: const Text(
+                              'Order',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     )
                   ],
                 )

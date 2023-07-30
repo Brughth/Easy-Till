@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_till/auth/logic/cubit/auth_cubit.dart';
 import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
@@ -90,7 +89,7 @@ class ApplicationScreen extends StatelessWidget {
               },
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 2.8,
+                  childAspectRatio: 2.2,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   crossAxisCount: 3,
@@ -110,6 +109,7 @@ class ApplicationScreen extends StatelessWidget {
                       ),
                       child: Center(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(product.name),
                             Text(

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'product_cubit.dart';
 
 @immutable

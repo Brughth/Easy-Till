@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_till/auth/logic/cubit/auth_cubit.dart';
+import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
 import 'package:easy_till/product/logic/cubit/product_cubit.dart';
 import 'package:easy_till/service_locator.dart';
 import 'package:easy_till/shared/routes/router.dart';
@@ -49,6 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
           if (state.successLonginging) {
             getIt.get<ProductCubit>().getProducts();
+            getIt
+                .get<CartCubit>()
+                .getPaymentMethods(shopId: state.user!.shopId);
             await AppSnackBar.showSuccess(
               message: "Welcome ${state.user?.name}",
               context: context,
@@ -71,7 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: screenWidth * .95,
+                      width: screenWidth <= 380
+                          ? screenWidth * .95
+                          : (screenWidth > 380 && screenWidth <= 800)
+                              ? screenWidth * .6
+                              : screenWidth * .4,
                       height: screenHeight * .53,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
