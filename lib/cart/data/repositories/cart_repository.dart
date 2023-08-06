@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:easy_till/cart/data/models/payment_method_model.dart';
+import 'package:easy_till/invoice/data/models/invoice_model.dart';
 
 class CartRepository {
   final Dio dio;
@@ -20,5 +21,17 @@ class CartRepository {
     }
 
     return data;
+  }
+
+  Future<InvoiceModel> createInvoice({
+    required Map<String, dynamic> data,
+    required int shopId,
+  }) async {
+    Response response = await dio.post(
+      '/api/shops/$shopId/invoices',
+      data: data,
+    );
+
+    return InvoiceModel.fromJson(response.data);
   }
 }

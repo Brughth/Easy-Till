@@ -26,112 +26,120 @@ class CartScreen extends StatelessWidget {
             return Column(
               children: [
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: state.productsInCart.length,
-                    itemBuilder: (context, index) {
-                      ProductModel product = state.productsInCart[index];
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                //Image.asset("assets/images/profile_pic.png"),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(product.name),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      "${product.unitPrice}",
-                                      textAlign: TextAlign.end,
-                                      style: const TextStyle(
-                                        color: AppColors.whiteGrey,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
+                  child: ScrollConfiguration(
+                    behavior: ScrollConfiguration.of(context).copyWith(
+                      scrollbars: false,
+                    ),
+                    child: ListView.separated(
+                      itemCount: state.productsInCart.length,
+                      itemBuilder: (context, index) {
+                        ProductModel product = state.productsInCart[index];
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  InkWell(
-                                    onTap: () {
-                                      context
-                                          .read<CartCubit>()
-                                          .decrementQuantity(product);
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: product.quantity == 1
-                                            ? AppColors.errorColor
-                                            : null,
-                                        borderRadius: BorderRadius.circular(4),
-                                        border:
-                                            Border.all(color: Colors.white10),
+                                  //Image.asset("assets/images/profile_pic.png"),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(product.name),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        "${product.unitPrice}",
+                                        textAlign: TextAlign.end,
+                                        style: const TextStyle(
+                                          color: AppColors.whiteGrey,
+                                          fontSize: 13,
+                                        ),
                                       ),
-                                      child: Icon(
-                                        product.quantity == 1
-                                            ? Icons.close
-                                            : Icons.remove,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: Text(
-                                      "${product.quantity}",
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      context
-                                          .read<CartCubit>()
-                                          .incrementQuantity(product);
-                                    },
-                                    child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border:
-                                            Border.all(color: Colors.white10),
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      child: const Icon(Icons.add),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              "${product.unitPrice * product.quantity!}",
-                              textAlign: TextAlign.end,
+                            Expanded(
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        context
+                                            .read<CartCubit>()
+                                            .decrementQuantity(product);
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: product.quantity == 1
+                                              ? AppColors.errorColor
+                                              : null,
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          border:
+                                              Border.all(color: Colors.white10),
+                                        ),
+                                        child: Icon(
+                                          product.quantity == 1
+                                              ? Icons.close
+                                              : Icons.remove,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      child: Text(
+                                        "${product.quantity}",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        context
+                                            .read<CartCubit>()
+                                            .incrementQuantity(product);
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.white10),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        child: const Icon(Icons.add),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const Divider(height: 35);
-                    },
+                            Expanded(
+                              child: Text(
+                                "${product.unitPrice * product.quantity!}",
+                                textAlign: TextAlign.end,
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider(height: 35);
+                      },
+                    ),
                   ),
                 ),
                 Column(

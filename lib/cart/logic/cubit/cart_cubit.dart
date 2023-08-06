@@ -96,7 +96,7 @@ class CartCubit extends Cubit<CartState> {
   setSelectedPaymentMethod(PaymentMethodModel pm) {
     emit(
       state.copyWith(
-        selectedPaymentMothod: pm,
+        selectedPaymentMethod: pm,
       ),
     );
   }

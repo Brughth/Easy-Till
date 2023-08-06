@@ -3,7 +3,7 @@ part of 'cart_cubit.dart';
 class CartState {
   List<ProductModel> productsInCart;
   double total;
-  PaymentMethodModel? selectedPaymentMothod;
+  PaymentMethodModel? selectedPaymentMethod;
   //
   List<PaymentMethodModel>? shopPaymentMethods;
   bool isLoadingPm;
@@ -13,7 +13,7 @@ class CartState {
   CartState({
     required this.productsInCart,
     required this.total,
-    this.selectedPaymentMothod,
+    this.selectedPaymentMethod,
     this.shopPaymentMethods,
     this.isLoadingPm = false,
     this.errorLoadingPm = false,
@@ -23,7 +23,7 @@ class CartState {
   CartState copyWith({
     List<ProductModel>? productsInCart,
     double? total,
-    PaymentMethodModel? selectedPaymentMothod,
+    PaymentMethodModel? selectedPaymentMethod,
     List<PaymentMethodModel>? shopPaymentMethods,
     bool? isLoadingPm,
     bool? errorLoadingPm,
@@ -32,8 +32,8 @@ class CartState {
     return CartState(
       productsInCart: productsInCart ?? this.productsInCart,
       total: total ?? this.total,
-      selectedPaymentMothod:
-          selectedPaymentMothod ?? this.selectedPaymentMothod,
+      selectedPaymentMethod:
+          selectedPaymentMethod ?? this.selectedPaymentMethod,
       shopPaymentMethods: shopPaymentMethods ?? this.shopPaymentMethods,
       isLoadingPm: isLoadingPm ?? this.isLoadingPm,
       errorLoadingPm: errorLoadingPm ?? this.errorLoadingPm,

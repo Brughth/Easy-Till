@@ -1,7 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_till/auth/logic/cubit/auth_cubit.dart';
+import 'package:easy_till/cart/data/repositories/cart_repository.dart';
 import 'package:easy_till/cart/logic/cubit/cart_cubit.dart';
+import 'package:easy_till/service_locator.dart';
+import 'package:easy_till/shared/utils/utils.dart';
 import 'package:easy_till/shared/widgets/app_button.dart';
 import 'package:easy_till/shared/widgets/app_input.dart';
+import 'package:easy_till/shared/widgets/app_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +23,10 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   late TextEditingController _nameController;
   late TextEditingController _collectedAmountControler;
+  double collectedAmount = 0;
+  double toReimbursed = 0;
+  bool isLoading = false;
+  var total = getIt.get<CartCubit>().state.total;
 
   @override
   void initState() {
@@ -58,6 +67,12 @@ class _OrderScreenState extends State<OrderScreen> {
                     label: "Colected Amount",
                     keyboardType: TextInputType.number,
                     hint: "Enter colected amount",
+                    onChange: (value) {
+                      setState(() {
+                        collectedAmount = double.parse(value);
+                        toReimbursed = collectedAmount - total;
+                      });
+                    },
                     labelStyle: const TextStyle(
                       color: AppColors.white,
                       fontSize: 16,
@@ -103,7 +118,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     ),
                                     child: Center(child: Text(pm.name)),
                                   ),
-                                  if (pm.id == state.selectedPaymentMothod?.id)
+                                  if (pm.id == state.selectedPaymentMethod?.id)
                                     const Positioned(
                                       right: 0,
                                       child: Icon(
@@ -179,7 +194,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                     ),
                                   ),
                                   Text(
-                                    _collectedAmountControler.text,
+                                    "${collectedAmount.ceil()}",
                                     style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
@@ -200,23 +215,22 @@ class _OrderScreenState extends State<OrderScreen> {
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "Montant a rembourse",
+                                  const Text(
+                                    "To be reimbursed",
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  // TODO handle this
                                   Text(
-                                    "00.0",
-                                    style: TextStyle(
+                                    "${toReimbursed.ceil()}",
+                                    style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -251,7 +265,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                   ),
                                   // TODO handle this
                                   Text(
-                                    state.selectedPaymentMothod?.name ?? "",
+                                    state.selectedPaymentMethod?.name ?? "",
                                     style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
@@ -268,6 +282,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   const SizedBox(height: 30),
                   AppButton(
                     bgColor: AppColors.primaryColor,
+                    loading: isLoading,
                     child: const Text(
                       'Collect',
                       style: TextStyle(
@@ -275,7 +290,66 @@ class _OrderScreenState extends State<OrderScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (state.selectedPaymentMethod == null) {
+                        AppSnackBar.showError(
+                          message: "payment method is required",
+                          context: context,
+                        );
+                        return;
+                      }
+
+                      if (_nameController.text.isEmpty) {
+                        AppSnackBar.showError(
+                          message: "Customer name is required",
+                          context: context,
+                        );
+                        return;
+                      }
+
+                      var data = {
+                        "till_session_id": 6,
+                        "customer_name": _nameController.text,
+                        "payment_method_id": state.selectedPaymentMethod!.id,
+                        "invoice_lines": state.productsInCart.map((item) {
+                          return {
+                            "product_id": item.id,
+                            "product_name": item.name,
+                            "price": item.unitPrice,
+                            "product_qty": item.quantity,
+                          };
+                        }).toList()
+                      };
+
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      try {
+                        var shopId = getIt.get<AuthCubit>().state.user!.shopId;
+                        var invoice =
+                            await getIt.get<CartRepository>().createInvoice(
+                                  data: data,
+                                  shopId: shopId,
+                                );
+                        setState(() {
+                          isLoading = false;
+                        });
+                        AppSnackBar.showSuccess(
+                          message: "Success",
+                          context: context,
+                        );
+                      } catch (e) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        print(e);
+                        AppSnackBar.showError(
+                          message: Utils.extracMessage(e),
+                          context: context,
+                        );
+                      }
+                    },
                   )
                 ],
               ),
